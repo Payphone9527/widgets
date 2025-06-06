@@ -1,11 +1,17 @@
 package com.worldline.interview;
 
+import java.math.BigDecimal;
+
 public class InternalCombustionEngine implements Engine {
 
     private boolean running;
     private int fuelLevel;
-    private FuelType requiredFuelType;
+    private final FuelType requiredFuelType;
     private FuelType fuelType;
+
+    public static final int BATCH_SIZE = 8;
+    private static final BigDecimal PETROL_COST = new BigDecimal("9.00");
+    private static final BigDecimal DIESEL_COST = new BigDecimal("12.00");
 
     public InternalCombustionEngine(FuelType requiredFuelType) {
         this.requiredFuelType = requiredFuelType;
@@ -18,7 +24,7 @@ public class InternalCombustionEngine implements Engine {
         if (fuelLevel > 0 && requiredFuelType.equals(fuelType)) {
             running = true;
         } else {
-            throw new IllegalStateException("Not able to start engine.");
+            throw new IllegalArgumentException("Not able to start engine.");
         }
     }
 
@@ -47,15 +53,15 @@ public class InternalCombustionEngine implements Engine {
 
     @Override
     public int getBatchSize() {
-        return 8;
+        return BATCH_SIZE;
     }
 
     @Override
-    public double getCostPerBatch() {
+    public BigDecimal getCostPerBatch() {
         return switch (requiredFuelType) {
-            case PETROL -> 9.00;
-            case DIESEL -> 12.00;
-            default -> throw new IllegalStateException("Invalid fuel type for internal combustion engine.");
+            case PETROL -> PETROL_COST;
+            case DIESEL -> DIESEL_COST;
+            default -> throw new IllegalArgumentException("Invalid fuel type for internal combustion engine.");
         };
     }
 

@@ -1,11 +1,17 @@
 package com.worldline.interview;
 
+import java.math.BigDecimal;
+
 public class SteamEngine implements Engine {
 
     private boolean running;
     private int fuelLevel;
-    private FuelType requiredFuelType;
+    private final FuelType requiredFuelType;
     private FuelType fuelType;
+
+    public static final int BATCH_SIZE = 2;
+    private static final BigDecimal WOOD_COST = new BigDecimal("4.35");
+    private static final BigDecimal COAL_COST = new BigDecimal("5.65");
 
     public SteamEngine(FuelType requiredFuelType) {
         if (requiredFuelType != FuelType.WOOD && requiredFuelType != FuelType.COAL) {
@@ -21,7 +27,7 @@ public class SteamEngine implements Engine {
         if (fuelLevel > 0 && requiredFuelType.equals(fuelType)) {
             running = true;
         } else {
-            throw new IllegalStateException("Not able to start steam engine.");
+            throw new IllegalArgumentException("Not able to start steam engine.");
         }
     }
 
@@ -54,15 +60,15 @@ public class SteamEngine implements Engine {
 
     @Override
     public int getBatchSize() {
-        return 2;
+        return BATCH_SIZE;
     }
 
     @Override
-    public double getCostPerBatch() {
+    public BigDecimal getCostPerBatch() {
         return switch (requiredFuelType) {
-            case WOOD -> 4.35;
-            case COAL -> 5.65;
-            default -> throw new IllegalStateException("Invalid fuel type for steam engine.");
+            case WOOD -> WOOD_COST;
+            case COAL -> COAL_COST;
+            default -> throw new IllegalArgumentException("Invalid fuel type for steam engine.");
         };
     }
 

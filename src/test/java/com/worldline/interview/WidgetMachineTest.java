@@ -3,6 +3,9 @@ package src.test.java.com.worldline.interview;
 import com.worldline.interview.*;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.math.BigDecimal;
+
 import static org.junit.Assert.*;
 
 public class WidgetMachineTest {
@@ -31,35 +34,35 @@ public class WidgetMachineTest {
     public void testProduceWidgetsInternalCombustionPetrol() {
         WidgetMachine wm = new WidgetMachine(internalCombustionPetrol);
 
-        double cost = wm.produceWidgets(20);
-        assertEquals(27.0, cost, 0.001);
+        BigDecimal cost = wm.produceWidgets(20);
+        assertEquals(0, cost.compareTo(new BigDecimal("27.0")));
     }
 
     @Test
     public void testProduceWidgetsInternalCombustionDiesel() {
         WidgetMachine wm = new WidgetMachine(internalCombustionDiesel);
 
-        double cost = wm.produceWidgets(16);
-        assertEquals(24.0, cost, 0.001);
+        BigDecimal cost = wm.produceWidgets(16);
+        assertEquals(0, cost.compareTo(new BigDecimal("24.0")));
     }
 
     @Test
     public void testProduceWidgetsSteamWood() {
         WidgetMachine wm = new WidgetMachine(steamWood);
 
-        double cost = wm.produceWidgets(7);
-        assertEquals(17.4, cost, 0.001);
+        BigDecimal cost = wm.produceWidgets(7);
+        assertEquals(0, cost.compareTo(new BigDecimal("17.4")));
     }
 
     @Test
     public void testProduceWidgetsSteamCoal() {
         WidgetMachine wm = new WidgetMachine(steamCoal);
 
-        double cost = wm.produceWidgets(5);
-        assertEquals(16.95, cost, 0.001);
+        BigDecimal cost = wm.produceWidgets(5);
+        assertEquals(0, cost.compareTo(new BigDecimal("16.95")));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testEngineStartFails() {
         Engine engine = new InternalCombustionEngine(FuelType.PETROL);
 

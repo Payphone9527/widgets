@@ -1,5 +1,7 @@
 package com.worldline.interview;
 
+import java.math.BigDecimal;
+
 public class WidgetMachine {
     private final Engine engine;
 
@@ -7,17 +9,23 @@ public class WidgetMachine {
         this.engine = engine;
     }
 
-    public double produceWidgets(int quantity) {
+    public BigDecimal produceWidgets(int quantity) {
         engine.start();
+        BigDecimal cost = BigDecimal.ZERO;
 
-        double cost = 0.0;
         if (engine.isRunning()) {
-            int batchSize = engine.getBatchSize();
-            int batchCount = (int) Math.ceil((double) quantity / batchSize);
-            cost = batchCount * engine.getCostPerBatch();
+            cost = produce(quantity);
         }
 
         engine.stop();
         return cost;
+    }
+
+    private BigDecimal produce(int quantity) {
+        int batchSize = engine.getBatchSize();
+        int batchCount = (int) Math.ceil((double) quantity / batchSize);
+        BigDecimal costPerBatch = engine.getCostPerBatch();
+
+        return costPerBatch.multiply(BigDecimal.valueOf(batchCount));
     }
 }
